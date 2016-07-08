@@ -13,7 +13,7 @@ use Drupal\Core\Url;
 include_once drupal_get_path('module', 'views_rss_core') . '/views_rss_core.inc';
 
 /**
- * Implementation of hook_views_rss_namespaces().
+ * Implements hook_views_rss_namespaces().
  */
 function views_rss_core_views_rss_namespaces() {
   $namespaces['atom'] = array(

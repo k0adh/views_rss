@@ -17,7 +17,7 @@ use Drupal\Component\Utility\UrlHelper;
  * Note: It is the caller's responsibility to sanitize any input parameters.
  * This function does not perform sanitization.
  *
- * @param $array
+ * @param array $array
  *   An array where each item represents an element and is either a:
  *   - (key => value) pair (<key>value</key>)
  *   - Associative array with fields:
@@ -26,8 +26,8 @@ use Drupal\Component\Utility\UrlHelper;
  *     - 'value': element contents
  *     - 'attributes': associative array of element attributes
  *
- * In both cases, 'value' can be a simple string, or it can be another array
- * with the same format as $array itself for nesting.
+ *   In both cases, 'value' can be a simple string, or it can be another array
+ *   with the same format as $array itself for nesting.
  *
  * @see format_xml_elements()
  */

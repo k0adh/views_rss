@@ -55,8 +55,8 @@ function views_rss_dc_views_rss_item_elements() {
   );
   $elements['dc:type'] = array(
     'description' => t('The nature or genre of the content of the resource. Type includes terms describing general categories, functions, genres, or aggregation levels for content. Recommended best practice is to select a value from a controlled vocabulary (for example, the working draft list of <a href="@core_types_url">Dublin Core Types</a>). To describe the physical or digital manifestation of the resource, use the FORMAT element.', array(
-       '@core_types_url' => Url::fromUri('http://dublincore.org/documents/dcmi-type-vocabulary/'),
-     )),
+      '@core_types_url' => Url::fromUri('http://dublincore.org/documents/dcmi-type-vocabulary/'),
+    )),
     'help' => 'http://dublincore.org/documents/1999/07/02/dces/#type',
   );
   $elements['dc:format'] = array(
