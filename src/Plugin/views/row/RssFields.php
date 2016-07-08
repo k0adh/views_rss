@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\views\Plugin\views\row\RssFields.
- */
-
 namespace Drupal\views_rss\Plugin\views\row;
 
 use Drupal\views\Plugin\views\row\RowPluginBase;
@@ -32,6 +27,9 @@ class RssFields extends RowPluginBase {
    */
   protected $usesFields = TRUE;
 
+  /**
+   * Function defineOptions.
+   */
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -48,6 +46,9 @@ class RssFields extends RowPluginBase {
     return $options;
   }
 
+  /**
+   * Function buildOptionsForm.
+   */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
@@ -126,6 +127,9 @@ class RssFields extends RowPluginBase {
     }
   }
 
+  /**
+   * Validates whether views_rss_core module exists or not.
+   */
   public function validate() {
     $errors = parent::validate();
 
@@ -143,6 +147,9 @@ class RssFields extends RowPluginBase {
     return $errors;
   }
 
+  /**
+   * Protected fuction mapRow.
+   */
   protected function mapRow($row) {
     $rendered_fields = $raw_fields = array();
     $field_ids = array_keys($this->view->field);
@@ -155,7 +162,6 @@ class RssFields extends RowPluginBase {
         if (method_exists($this->view->field[$field_id], 'getItems')) {
           $raw_fields[$field_id]['items'] = $this->view->field[$field_id]->getItems($row);
         }
-
       }
     }
 
@@ -171,10 +177,7 @@ class RssFields extends RowPluginBase {
           if (!empty($this->options['item'][$namespace][$module][$element_name])) {
             $field_name = $this->options['item'][$namespace][$module][$element_name];
           }
-          elseif (
-            !empty($definition['group'])
-            && !empty($this->options['item'][$namespace][$module][$definition['group']][$element_name])
-          ) {
+          elseif (!empty($definition['group']) && !empty($this->options['item'][$namespace][$module][$definition['group']][$element_name])) {
             $field_name = $this->options['item'][$namespace][$module][$definition['group']][$element_name];
           }
           else {
@@ -204,6 +207,9 @@ class RssFields extends RowPluginBase {
     return $item;
   }
 
+  /**
+   * Function render.
+   */
   public function render($row) {
     static $row_index;
     if (!isset($row_index)) {
@@ -239,10 +245,9 @@ class RssFields extends RowPluginBase {
         // depending on the field configuration/processing, and because we know
         // it will be encoded again when the whole feed array will be passed to
         // format_xml_elements(), let's make sure we decode it here first.
-//        if (is_string($value)) {
-//          $value = htmlspecialchars_decode($value, ENT_QUOTES);
-//        }
-
+        // if (is_string($value)) {
+        // $value = htmlspecialchars_decode($value, ENT_QUOTES);
+        // }
         // Start building XML element array compatible with format_xml_elements().
         $rss_elements = array(
           array(
@@ -271,26 +276,25 @@ class RssFields extends RowPluginBase {
         // If no preprocess function was defined, and we have received
         // #rss_element value (XML element array) from the formatter, it should
         // be added to the feed array without any further modifications.
-//        elseif (
-//          !empty($view->views_rss['raw_items'][$item_key][$module][$element])
-//          && is_array($view->views_rss['raw_items'][$item_key][$module][$element])
-//        ) {
-//          // At this point we don't know yet if we got #rss_elements in raw
-//          // values, so do not overwrite and empty main $rss_elements yet, just
-//          // start working with new $formatter_rss_elements - it could be
-//          // overwritten once we are sure we have all required values.
-//          $formatter_rss_elements = array();
-//          foreach ($view->views_rss['raw_items'][$item_key][$module][$element] as $raw_item) {
-//            if (!empty($raw_item['rendered']['#rss_element'])) {
-//              $formatter_rss_elements[] = $raw_item['rendered']['#rss_element'];
-//            }
-//          }
-//          // Now we can overwrite main $rss_elements.
-//          if (!empty($formatter_rss_elements)) {
-//            $rss_elements = $formatter_rss_elements;
-//          }
-//        }
-
+        //elseif (
+        // !empty($view->views_rss['raw_items'][$item_key][$module][$element])
+        // && is_array($view->views_rss['raw_items'][$item_key][$module][$element])
+        // ) {
+        // At this point we don't know yet if we got #rss_elements in raw
+        // values, so do not overwrite and empty main $rss_elements yet, just
+        // start working with new $formatter_rss_elements - it could be
+        // overwritten once we are sure we have all required values.
+        // $formatter_rss_elements = array();
+        // foreach ($view->views_rss['raw_items'][$item_key][$module][$element] as $raw_item) {
+        // if (!empty($raw_item['rendered']['#rss_element'])) {
+        // $formatter_rss_elements[] = $raw_item['rendered']['#rss_element'];
+        // }
+        // }
+        // Now we can overwrite main $rss_elements.
+        // if (!empty($formatter_rss_elements)) {
+        // $rss_elements = $formatter_rss_elements;
+        // }
+        // }
         // If there is no value and no attributes (in case of self-closing elements)
         // already set for the element at this stage, it is not going to be set
         // at any point further, so the element should not be added to the feed.
@@ -299,7 +303,9 @@ class RssFields extends RowPluginBase {
             unset($rss_elements[$key]);
           }
         }
-        if (empty($rss_elements)) continue;
+        if (empty($rss_elements)) {
+		  continue;
+	    }
 
         // Special processing for title, description and link elements, as these
         // are hardcoded both in template_preprocess_views_view_row_rss() and in
@@ -317,10 +323,7 @@ class RssFields extends RowPluginBase {
 
     // Merge RDF namespaces in the XML namespaces in case they are used
     // further in the RSS content.
-    if (
-      function_exists('rdf_get_namespaces')
-      && !empty($this->view->style_plugin->options['namespaces']['add_rdf_namespaces'])
-    ) {
+    if (function_exists('rdf_get_namespaces') && !empty($this->view->style_plugin->options['namespaces']['add_rdf_namespaces'])) {
       $xml_rdf_namespaces = array();
       foreach (rdf_get_namespaces() as $prefix => $uri) {
         $xml_rdf_namespaces['xmlns:' . $prefix] = $uri;
@@ -328,8 +331,7 @@ class RssFields extends RowPluginBase {
       $this->view->style_plugin->namespaces += $xml_rdf_namespaces;
     }
 
-//    $row_index++;
-
+    // $row_index++;
     $build = array(
       '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
@@ -343,9 +345,9 @@ class RssFields extends RowPluginBase {
   /**
    * Retrieves a views field value from the style plugin.
    *
-   * @param $index
+   * @param int $index
    *   The index count of the row as expected by views_plugin_style::getField().
-   * @param $field_id
+   * @param string $field_id
    *   The ID assigned to the required field in the display.
    */
   public function getField($index, $field_id) {

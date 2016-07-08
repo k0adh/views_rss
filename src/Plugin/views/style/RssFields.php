@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\views\Plugin\views\style\Rss.
- */
-
 namespace Drupal\views_rss\Plugin\views\style;
 
 use Drupal\views\Plugin\views\style\StylePluginBase;
@@ -273,6 +268,9 @@ class RssFields extends StylePluginBase {
     );
   }
 
+  /**
+   * Function validateOptionsForm.
+   */
   public function validateOptionsForm(&$form, FormStateInterface $form_state) {
     parent::validateOptionsForm($form, $form_state);
 
@@ -283,6 +281,9 @@ class RssFields extends StylePluginBase {
     }
   }
 
+  /**
+   * Function submitOptionsForm.
+   */
   public function submitOptionsForm(&$form, FormStateInterface $form_state) {
     parent::submitOptionsForm($form, $form_state);
 
@@ -296,7 +297,7 @@ class RssFields extends StylePluginBase {
   /**
    * Return an array of additional XHTML elements to add to the channel.
    *
-   * @return
+   * @return string $elements
    *   An array that can be passed to format_xml_elements().
    */
   protected function getChannelElements() {
@@ -377,6 +378,9 @@ class RssFields extends StylePluginBase {
     return $description;
   }
 
+  /**
+   * Function getNamespaces.
+   */
   protected function getNamespaces() {
     $namespaces = array();
 
@@ -394,12 +398,12 @@ class RssFields extends StylePluginBase {
 
         // Add namespace to feed array.
         if (!empty($definition['uri'])) {
-          // Namespaces with prefix, for example xml:base="" or xmlns:dc=""
+          // Namespaces with prefix, for example xml:base="" or xmlns:dc="".
           if (!empty($definition['prefix'])) {
             $namespace_key = $definition['prefix'] . ':' . $namespace;
             $namespaces[$namespace_key] = $definition['uri'];
           }
-          // Namespaces without prefix, for example: content="" or foaf=""
+          // Namespaces without prefix, for example: content="" or foaf="".
           else {
             $namespaces[$namespace] = $definition['uri'];
           }
